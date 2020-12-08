@@ -1,5 +1,41 @@
 $(document).ready(function () {
 
+    $("#all-city").click(function() {
+        $.ajax({
+            url: 'api/city/all',
+            dataType: 'json',
+            method: 'GET',
+            delay: 350,
+            success: function (myData) {
+                var cities = JSON.parse(JSON.stringify(myData.data));
+                cities.forEach(function (item, i, arr) {
+                    //console.log("name: "+cities[i].name+", lat: "+cities[i].latitude+", long: "+cities[i].longitude);
+                    var nameCity = cities[i].latitude+","+cities[i].longitude;
+                    var data = {
+                        '_method': 'POST',
+                        "nameCity": nameCity
+                    };
+                    $.ajax({
+                        url: '/api/city/weather',
+                        dataType : "json",
+                        method: 'POST',
+                        data: data,
+                        delay: 350,
+                        success: function (myData) {
+                            var data = JSON.parse(JSON.stringify(myData.data));
+                            $(".city-weater").append(
+                                '<h3>'+"Processed city "+data.location.name+ " | "+
+                                data.forecast.forecastday[0].day.condition.text+" "+'<img src='+data.forecast.forecastday[0].day.condition.icon+'>'+" - "+
+                                data.forecast.forecastday[1].day.condition.text+" "+'<img src='+data.forecast.forecastday[1].day.condition.icon+'>'+'</h3>'
+                            );
+                        }
+                    });
+                    //console.log( i + ": " + JSON.parse(JSON.stringify(item)) + " (массив:" + arr + ")" );
+                })
+            }
+        });
+    });
+
     $("#city").keyup(function(e) {
 
         e.preventDefault();
@@ -13,7 +49,7 @@ $(document).ready(function () {
             };
 
             $.ajax({
-                url: '/api/city',
+                url: '/api/city/weather',
                 dataType : "json",
                 method: 'POST',
                 data: data,
@@ -30,5 +66,5 @@ $(document).ready(function () {
         }
 
     });
-// Processed city [city name] | [weather today] - [weather tomorrow]
+
 });
