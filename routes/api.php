@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'city', 'as' => 'city.'], function () {
 
-    Route::post('/', 'CityController@city')->name("get.weather");
+    Route::get('/all', 'CityController@cities')->name("get.cities");
+    Route::post('/weather', 'CityController@city_weather')->name("get.weather");
 
 });
