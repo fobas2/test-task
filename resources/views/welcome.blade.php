@@ -26,6 +26,12 @@
                     <div class="weather-result">
                     </div>
                 </div>
+                <div class="col-12">
+                    <button id="all-city">Show All Cities Weather</button>
+                    <div class="city-weater">
+
+                    </div>
+                </div>
             </div>
         </div>
 
